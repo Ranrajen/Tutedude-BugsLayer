@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             description: 'Collaborative group for purchasing fresh fruits and vegetables at wholesale prices.',
             status: 'Active',
             members: demoMembers.slice(0, 8),
-            maxMembers: 10
+            maxMembers: 9
         },
         {
             _id: 'demo2',
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: 'dairy',
             description: 'Bulk buying of milk, cheese, and other dairy products.',
             status: 'Active',
-            members: demoMembers.slice(0, 10),
+            members: demoMembers.slice(0, 9),
             maxMembers: 10
         },
         {
@@ -261,6 +261,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    //create teh group     
+    function createNewGroup() {
+        const groupName = document.getElementById('groupName').value;
+        const groupCategory = document.getElementById('groupCategory').value;
+        const groupDescription = document.getElementById('groupDescription').value;
+        
+        if (!groupName || !groupCategory) {
+            alert('Please fill in all required fields');
+            return;
+        }
+        
+        // Create new group
+        const newGroup = {
+            id: groups.length + 1,
+            name: groupName,
+            category: groupCategory,
+            members: 1,
+            status: 'Forming',
+            savings: '₹0',
+            description: groupDescription || 'No description provided',
+            created: 'Just now'
+        };
+        
+        groups.unshift(newGroup);
+        renderGroups();
+        
+        // Close modal and reset form
+        closeCreateGroupModal();
+        
+        // Show success message
+        alert(`Group "${groupName}" created successfully! Start inviting other vendors.`);
+    }
+
     // Create new group
     async function createNewGroup() {
         const groupName = document.getElementById('groupName').value;
@@ -270,29 +303,8 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please fill in all required fields');
             return;
         }
-        try {
-            const res = await fetch('http://localhost:5000/api/groups', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify({
-                    name: groupName,
-                    category: groupCategory,
-                    description: groupDescription
-                })
-            });
-            if (res.ok) {
-                closeModal();
-                fetchGroups();
-                alert(`Group "${groupName}" created successfully!`);
-            } else {
-                alert('Failed to create group.');
-            }
-        } catch {
-            alert('Failed to create group.');
-        }
+       
+        
     }
 
     function openModal() {

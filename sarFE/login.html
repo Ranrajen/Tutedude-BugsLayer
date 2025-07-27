@@ -30,20 +30,6 @@
         const errorElem = document.getElementById('loginError');
         errorElem.textContent = '';
 
-
-
-// Example for login.js or after successful registration
-const token = data.token; // from backend
-localStorage.setItem('token', token);
-
-const payload = JSON.parse(atob(token.split('.')[1]));
-if (payload.role === 'supplier') {
-    window.location.href = 'supplier-dashboard.html';
-} else {
-    window.location.href = 'dashboard.html'; // vendor dashboard
-}
-
-
         try {
             const res = await fetch('http://localhost:5000/api/login', {
                 method: 'POST',
